@@ -1,0 +1,42 @@
+package percent
+
+import (
+	"fmt"
+	"testing"
+)
+
+var escapeTests = []struct {
+	input          string
+	charsToEscape  string
+	expectedOutput string
+}{
+	{"a b c", "", "a b c"},
+	{"a b c", "/!@#$", "a b c"},
+	{"a c", " ", "a%20c"},
+	{"a/c", "/", "a%2Fc"},
+	{"é", "é", "%C3%A9"},       // mulitbyte char
+	{"😀", "😀", "%F0%9F%98%80"}, // emoji
+}
+
+func TestEscapeUnescapeRoundTrip(t *testing.T) {
+	for _, tt := range escapeTests {
+		t.Run(tt.input, func(t *testing.T) {
+			result1 := Escape(tt.input, tt.charsToEscape)
+			if result1 != tt.expectedOutput {
+				t.Errorf("result1: got %q, want %q", result1, tt.expectedOutput)
+			}
+			result2 := Unescape(result1)
+			if result2 != tt.input {
+				t.Errorf("result2: got %q, want %q", result2, tt.input)
+			}
+		})
+	}
+}
+
+func Example() {
+	percentEncoded := Escape("a.b/c d", "/. ")
+	fmt.Println(percentEncoded)
+	fmt.Println(Unescape(percentEncoded))
+	// Output: a%2Eb%2Fc%20d
+	// a.b/c d
+}
