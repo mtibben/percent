@@ -5,9 +5,9 @@ import (
 )
 
 func Example() {
-	percentEncoded := Escape("a.b/c d", "/. ")
+	percentEncoded := Encode("a.b/c d", "/. ")
 	fmt.Println(percentEncoded)
-	fmt.Println(Unescape(percentEncoded))
+	fmt.Println(Decode(percentEncoded))
 	// Output: a%2Eb%2Fc%20d
 	// a.b/c d
 }

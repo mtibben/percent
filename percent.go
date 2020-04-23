@@ -31,8 +31,8 @@ func ishex(c byte) bool {
 	return false
 }
 
-// Escape escapes the string using percent-encoding, converting the runes found in charsToEncode with hex-encoded %AB sequences
-func Escape(s string, charsToEscape string) string {
+// Encode escapes the string using percent-encoding, converting the runes found in charsToEncode with hex-encoded %AB sequences
+func Encode(s string, charsToEscape string) string {
 	var t strings.Builder
 	for _, c := range s {
 		if strings.IndexRune(charsToEscape, c) != -1 || c == '%' {
@@ -48,8 +48,8 @@ func Escape(s string, charsToEscape string) string {
 	return t.String()
 }
 
-// Unescape does the inverse transformation of Escape, converting each 3-byte encoded substring of the form "%AB" into the hex-decoded byte 0xAB
-func Unescape(s string) string {
+// Decode does the inverse transformation of Escape, converting each 3-byte encoded substring of the form "%AB" into the hex-decoded byte 0xAB
+func Decode(s string) string {
 	var t []byte
 	for i := 0; i < len(s); i++ {
 		// check next 2 chars are valid
